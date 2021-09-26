@@ -7,3 +7,5 @@ export const loadList = () => axios.post(config.app.loadList, {})
     // deleted_at: item.created_at ? parseISO(item.deleted_at) : null,
     // updated_at: item.updated_at ? parseISO(item.updated_at) : null,
   })));
+
+  export const save = app => axios.post(config.app.add, app);

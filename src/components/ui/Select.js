@@ -4,26 +4,26 @@ import { View, StyleSheet, Text } from 'react-native';
 import { Button, BottomSheet, ListItem } from 'react-native-elements'
 import { THEME } from '../../theme';
 
-const Select = ({ placeholder, label, onSelect, list, unitField, value }) => {
+const Select = ({ label, onSelect, list, unitField, value }) => {
 
 
   const [localState, setLocalState] = useState(value)
   const [isVisible, setIsVisible] = useState(false)
 
   const choise = (item) => {
-    setLocalState(item.field)
+    setLocalState(item.title)
     onSelect(item.field, unitField)
     setIsVisible(false)
   }
 
   useEffect(() => {
-
-  }, [])
+  
+  }, [localState])
   return (
     <View style={styles.select}>
       <Text style={styles.label}>{label}</Text>
       <View style={styles.inputContainer}>
-        <Text style={styles.inputText}>{localState}</Text>
+        <Text style={styles.inputText}>{value}</Text>
         <Button onPress={() => setIsVisible(true)} buttonStyle={styles.button} title="Select" iconRight icon={() => <MaterialCommunityIcons name="form-select" size={24} color="#fff" />} />
       </View>
       <BottomSheet isVisible={isVisible}>

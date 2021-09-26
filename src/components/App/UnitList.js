@@ -5,13 +5,8 @@ import UnitItem from '../ui/UnitItem';
 
 const UnitList = ({app, navigation}) => {
 
-  //const {adUnits} = useSelector(state => state.adUnits)
+  const {units} = useSelector(state => state.units)
 
-  const adUnits = [{
-    id: 1,
-    name: 'Unit 1',
-    position: 'Sticky Top'
-  }]
 
   const goToUnit = (unit) => {
     navigation.navigate('Unit', { unit, app })
@@ -22,10 +17,9 @@ const UnitList = ({app, navigation}) => {
   }, [])
   return (
     <View style={styles.container}>
-      <Button title="Add new unit" onPress={() => goToUnit({})}/>
       <FlatList
         style={styles.list}
-        data={adUnits}
+        data={units}
         keyExtractor={unit => unit.id}
         showsHorizontalScrollIndicator={false}
         pagingEnabled
@@ -41,7 +35,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: '#fff'
   },
   list: {
     flex: 1,

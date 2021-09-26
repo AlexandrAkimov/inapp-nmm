@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import {useDispatch, useSelector} from 'react-redux'
 import { FAB } from 'react-native-elements';
 import { useWindowDimensions, StyleSheet } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
@@ -8,34 +9,42 @@ import Admob from '../components/Unit/Admob';
 import GeoTargeting from '../components/Unit/GeoTargeting';
 import { THEME } from '../theme';
 import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { AdUnit } from '../models/app';
+import {saveApp} from '../store/actions/apps'
 
 
 const UnitScreen = ({ navigation, route }) => {
+  const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
-  const name = route.params.unit.id ? route.params.unit.name : 'Add new unit'
+  const defaultUnit = new AdUnit()
   const app = route.params.app
-  const unit = route.params.unit
+  const unit = route.params.unit.id ? route.params.unit : defaultUnit
+  const {units} = useSelector(state => state.units)
 
-  let actualUnit = unit
+  const [actualUnit, setActualUnit] = useState(unit)
 
-  const onChangeUnitHandler = (name, ad_unit_path) => {
-    actualUnit = {
-      name, ad_unit_path: ad_unit_path
-    }
+  const onChangeUnitHandler = (unit) => {
+    setActualUnit(unit)
   }
 
-  const saveApp = () => {
-    console.log(actualUnit);
+  const save = () => {
+    dispatch(saveApp({
+      app,
+      adUnits: [...units, actualUnit],
+      activities: [],
+      selectActivities: [[]]
+    }))
+    navigation.push('Apps')
   }
 
   const renderScene = ({ route }) => {
     switch (route.key) {
       case 'first':
-        return <Settings app={app} unit={unit} onChangeUnit={onChangeUnitHandler} />;
+        return <Settings app={app} unit={unit} onChangeUnit={onChangeUnitHandler} actualUnit={actualUnit} />;
       case 'second':
-        return <Demand app={app} />;
+        return <Demand app={app} unit={unit} onChangeUnit={onChangeUnitHandler}/>;
       case 'third':
-        return <Admob app={app} />;
+        return <Admob app={app} unit={unit} onChangeUnit={onChangeUnitHandler} actualUnit={actualUnit}/>;
       case 'four':
         return <GeoTargeting app={app} />;
       default:
@@ -54,8 +63,8 @@ const UnitScreen = ({ navigation, route }) => {
 
 
   useEffect(() => {
-    navigation.setParams({ app, unit })
-  }, [])
+    console.log('render');
+  }, [actualUnit])
 
   const layout = useWindowDimensions();
 
@@ -98,7 +107,7 @@ const UnitScreen = ({ navigation, route }) => {
 
       <FAB 
         title="Save" 
-        onPress={saveApp}
+        onPress={save}
         color={THEME.MAIN_COLOR} 
         buttonStyle={{width: 150}}
         containerStyle={{margin: 10}} 

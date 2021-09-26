@@ -11,21 +11,8 @@ const Settings = ({ app, navigation, onChangeApp }) => {
   const [admobId, setAdmobId] = useState(app.admob_app_id)
   const [status, setStatus] = useState(app.is_active)
 
-  const saveApp = () => {
-    dispatch(saveApp({
-      app: { ...app, name, url, admob_app_id: admobId },
-      adUnits,
-      activities,
-      selectActivities
-    }))
-  }
-
-  const change = (text, cb) => {
-    cb(text)
-    onChangeApp({ name, url, admob_app_id: admobId, is_active: status })
-  }
   useEffect(() => {
-    console.log(name);
+    onChangeApp({ name, url, admob_app_id: admobId, is_active: status })
   }, [name, url, admobId, status])
 
   return (
@@ -34,21 +21,21 @@ const Settings = ({ app, navigation, onChangeApp }) => {
         <Input
           label="Name"
           inputStyle={styles.input}
-          onChangeText={(text) => change(text, setName)}
+          onChangeText={setName}
           value={name}
           renderErrorMessage={true}
           placeholder='Enter app name'
         />
         <Input
           label="Appstore URL"
-          onChangeText={(text) => change(text, setUrl)}
+          onChangeText={setUrl}
           value={url}
           renderErrorMessage={true}
           placeholder='Enter app URL'
         />
         <Input
           label="Admob app ID"
-          onChangeText={(text) => change(text, setName)}
+          onChangeText={setAdmobId}
           value={admobId}
           renderErrorMessage={true}
           placeholder='Enter Admob app ID'
@@ -60,17 +47,6 @@ const Settings = ({ app, navigation, onChangeApp }) => {
         <Text style={{ fontWeight: 'bold', fontSize: 17, color: 'grey' }}>Status</Text>
         <Switch color={THEME.MAIN_COLOR} value={status} onChange={() => setStatus(prevStatus => prevStatus = !prevStatus)} />
       </View>
-      <View style={{ width: '50%', justifyContent: 'center', flexDirection: 'column', alignSelf: 'flex-end' }}>
-        <Button
-          disabled={!name || !url}
-          buttonStyle={{ backgroundColor: THEME.MAIN_COLOR, flexDirection: 'row', justifyContent: 'space-around' }}
-          icon={
-            <Ionicons name="save" size={25} color={'#fff'} />
-          }
-          title={!app.id ? 'SAVE CHANGES' : 'SAVE APP'}
-        />
-      </View>
-
 
     </View>
   );
@@ -81,7 +57,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     paddingBottom: 50,
-    backgroundColor: THEME.LIGHT_COLOR
   },
   input: {
     borderBottomWidth: 0.5,

@@ -1,15 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { CommonActions } from '@react-navigation/native';
 import { View, Text, StyleSheet, FlatList, Animated } from 'react-native';
-import { Button } from 'react-native-elements';
-import { loadList } from '../api/apps';
 import AppItem from '../components/ui/AppItem';
 import { useDispatch, useSelector } from 'react-redux';
-import { Ionicons } from '@expo/vector-icons';
 import { THEME } from '../theme';
 import AppFilters from '../components/ui/AppFilters';
-import { setLoading } from '../store/actions/loading';
 import { loadApps } from '../store/actions/apps';
 
 const MainScreen = ({ navigation, route }) => {
