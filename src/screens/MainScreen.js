@@ -1,13 +1,16 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, StyleSheet, FlatList, Animated } from 'react-native';
+import { useTheme } from '@react-navigation/native';
 import AppItem from '../components/ui/AppItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { THEME } from '../theme';
 import AppFilters from '../components/ui/AppFilters';
 import { loadApps } from '../store/actions/apps';
+import { Button } from 'react-native';
+
 
 const MainScreen = ({ navigation, route }) => {
-
+  const { colors } = useTheme();
   const {apps} = useSelector(state => state.apps)
 
   const [isFilters, setIsFilters] = useState(false)
@@ -47,7 +50,7 @@ const MainScreen = ({ navigation, route }) => {
   }).start();
 
   return (
-    <View style={styles.wrapper}>
+    <View style={{...styles.wrapper, backgroundColor: colors.background}}>
       {isFilters ? 
         <Animated.View style={{ opacity: shown, ...styles.filters }}>
           <AppFilters onFind={findAppHandler} onClear={clearFindHandler}/>
@@ -71,6 +74,7 @@ const MainScreen = ({ navigation, route }) => {
         scrollEventThrottle={16}
         renderItem={({ item }) => <AppItem app={item} onOpen={goToApp} />}
       />
+      {/* <Button onPress={() => theme = 'DARK'} title="Theme"/> */}
     </View>
   );
 }
@@ -80,6 +84,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     width: '100%',
+    backgroundColor: THEME.TETRIARY_DARKEN_COLOR
   },
   list: {
     flex: 1,

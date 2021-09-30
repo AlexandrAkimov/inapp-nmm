@@ -11,7 +11,6 @@ export const getUnits = (appId) => {
   return async dispatch => {
     try {
       const units = await loadUnits(appId)
-      console.log('API units', units);
       dispatch(load(units))
     } catch (error) {
       new Error(`Error: ${error}`)

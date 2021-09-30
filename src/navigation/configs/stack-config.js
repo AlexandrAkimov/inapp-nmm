@@ -49,8 +49,9 @@ export const stackConfig = [
     name: "App",
     component: AppScreen,
     options: (navigation, route) => {
+        console.log(route.params);
       return {
-        title: route.params.app.name ? route.params.app.name : "Add new app",
+        title: route.params?.app?.name ? route.params.app.name : "Add new app",
       };
     },
   },

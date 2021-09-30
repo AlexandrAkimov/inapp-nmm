@@ -6,25 +6,34 @@ import {
 } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { useWindowDimensions, StyleSheet, View } from "react-native";
+import { useTheme } from '@react-navigation/native';
 import { FAB } from "react-native-elements";
 import { TabView, TabBar } from "react-native-tab-view";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Activities from "../components/App/Activities";
 import Settings from "../components/App/Settings";
 import UnitList from "../components/App/UnitList";
 import { AdUnit, App } from "../models/app";
 import { getUnits } from "../store/actions/units";
+import { saveApp } from "../store/actions/apps";
 import { THEME } from "../theme";
+import Loading from "../components/ui/Loading";
 
 const AppScreen = ({ navigation, route }) => {
   const dispatch = useDispatch()
+  const {colors} = useTheme();
   const defaultApp = new App();
-  let app = route.params ? route.params.app : defaultApp;
-
+  let app = route.params?.app?.id ? route.params.app : defaultApp;
+  const { units } = useSelector((state) => state.units);
+  const { localLoading } = useSelector((state) => state.loading);
   const [changingApp, setChangingApp] = useState(app);
 
-  const changeAppHandler = (app) => {
-    setChangingApp(app);
+  const [valid, setValid] = useState(false)
+
+  const changeAppHandler = (changedApp) => {
+    const newApp = Object.assign(app, changedApp)
+    setChangingApp(newApp);
+    setValid(newApp.name && newApp.url)
   };
 
   const renderScene = ({ route }) => {
@@ -56,6 +65,7 @@ const AppScreen = ({ navigation, route }) => {
     if (app.id) {
       dispatch(getUnits(app.id))
     }
+    console.log('init');
   }, []);
 
   const layout = useWindowDimensions();
@@ -74,8 +84,17 @@ const AppScreen = ({ navigation, route }) => {
     }
   };
 
-  const saveApp = () => {
-    console.log(changingApp);
+  const save = async () => {
+    if (!units.length) {
+      return
+    }
+    dispatch(saveApp({
+      app: changingApp,
+      adUnits: units,
+      activities: [],
+      selectActivities: [[]]
+    }))
+    navigation.setParams('App', {app: changingApp})
   };
 
   const renderTabBar = (props) => (
@@ -83,12 +102,12 @@ const AppScreen = ({ navigation, route }) => {
       {...props}
       indicatorStyle={{ backgroundColor: "white" }}
       renderIcon={(props) => getTabBarIcon(props)}
-      style={{ backgroundColor: THEME.MAIN_COLOR }}
+      style={ { backgroundColor: colors.card  }}
     />
   );
 
   return (
-    <>
+    localLoading ? <Loading /> : <>
       <TabView
         renderTabBar={renderTabBar}
         navigationState={{ index, routes }}
@@ -101,7 +120,7 @@ const AppScreen = ({ navigation, route }) => {
         <View style={styles.actions}>
           <FAB
             title="Save"
-            onPress={saveApp}
+            onPress={save}
             color={THEME.MAIN_COLOR}
             buttonStyle={{ width: 150 }}
             containerStyle={{ margin: 10 }}
@@ -124,7 +143,7 @@ const AppScreen = ({ navigation, route }) => {
         <FAB
           title="Add Ad Unit"
           onPress={() => navigation.navigate('Unit', {app: changingApp, unit: new AdUnit()})}
-          disabled={!changingApp.name || !changingApp.url}
+          disabled={!valid}
           color={THEME.MAIN_COLOR}
           buttonStyle={{ width: 200 }}
           containerStyle={{ margin: 10 }}

@@ -8,9 +8,7 @@ const Stack = createNativeStackNavigator();
 export default function StackNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Group
-        screenOptions={headerCommonOptions}
-      >
+      <Stack.Group>
         {stackConfig.map((screen, index) => {
           return (
             <Stack.Screen

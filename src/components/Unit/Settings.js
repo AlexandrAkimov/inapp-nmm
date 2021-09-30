@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { TouchableWithoutFeedback } from "react-native";
 import { StyleSheet, View, ScrollView, Text, Keyboard } from "react-native";
-import { Switch, BottomSheet, ListItem, Input } from "react-native-elements";
+import { Switch, Input } from "react-native-elements";
 import { THEME } from "../../theme";
 import Select from "../ui/Select";
 

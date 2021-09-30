@@ -1,4 +1,4 @@
-import {nanoid} from 'nanoid'
+// import {nanoid} from 'nanoid'
 export class AdUnit {
   is_active = true;
   name = '';
@@ -18,7 +18,7 @@ export class AdUnit {
   is_between_articles = false;
   lazy_load = false;
   padding_top = 0;
-  uniqId = nanoid(7);
+  uniqId = Date.now().toString();
   geo = []
 }
 

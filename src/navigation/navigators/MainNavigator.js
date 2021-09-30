@@ -13,14 +13,12 @@ const Stack = createNativeStackNavigator();
 export default function StackNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Group
-        screenOptions={headerCommonOptions}
-      >
+      <Stack.Group>
         <Stack.Screen
           name="Apps"
           component={TabNavigator}
           options={(navigation, route) => ({
-            headerShown: false
+            headerShown: false,
           })}
         />
         <Stack.Screen

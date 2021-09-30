@@ -1,7 +1,8 @@
 import { loadList, save } from "../../api/apps"
 import { CREATE_APP, LOAD_APPS } from "../types"
 import * as RootNavigation from '../../navigation/RootNavigation';
-import { setLoading } from "./loading"
+import { setLoading, setLocalLoading } from "./loading"
+import { getUnits } from "./units";
 
 const load = apps => ({
   type: LOAD_APPS,
@@ -27,12 +28,21 @@ export const loadApps = () => {
 export const saveApp = (app) => {
   return async dispatch => {
     try {
+
+      dispatch(setLocalLoading(true))
+      console.log(app.app);
+      delete app.app.activities_count
       await save(app)
-      dispatch(loadApps())
-      if (app.id) {
-        
-      }
-      
+      await dispatch(loadApps())
+      await dispatch(getUnits(app.app.id))
+      console.log(app);
+      if (!app.app.id) {
+        RootNavigation.navigate('MainApp')
+      } else if (!app.adUnits.every(u => u.id)) {
+        RootNavigation.navigate('App', {app: app.app})
+      } 
+
+      dispatch(setLocalLoading(false))
     } catch (error) {
       new Error(`Error: ${error}`)
     }
