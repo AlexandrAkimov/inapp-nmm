@@ -56,7 +56,6 @@ const Settings = ({ app, unit, navigation, onChangeUnit, actualUnit }) => {
         setAdmobSize(value);
         break;
       case "position":
-        console.log(value);
         setPosition(value);
         break;
       default:

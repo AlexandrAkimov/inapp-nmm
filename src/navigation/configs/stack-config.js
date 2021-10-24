@@ -9,6 +9,7 @@ import LoginScreen from "../../screens/LoginScreen";
 import { AdUnit, App } from "../../models/app";
 import { View, Text } from "react-native";
 import { TouchableOpacity } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
 
 export const stackConfig = [
   {
@@ -49,7 +50,6 @@ export const stackConfig = [
     name: "App",
     component: AppScreen,
     options: (navigation, route) => {
-        console.log(route.params);
       return {
         title: route.params?.app?.name ? route.params.app.name : "Add new app",
       };
@@ -63,12 +63,12 @@ export const stackConfig = [
         title: route.params.unit.name
           ? route.params.unit.name
           : "Add new ad unit",
-        // headerRight: () => (
+        headerRight: () => (
 
-        //   <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-        //     <Item title="booked" iconName={'star-outline'} />
-        //   </HeaderButtons>
-        // )
+          <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+            <Item title="booked" iconName={'save'} IconComponent={FontAwesome} onPress={() => route.params.save()}/>
+          </HeaderButtons>
+        )
       };
     },
   },

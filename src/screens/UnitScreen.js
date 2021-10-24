@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTheme } from '@react-navigation/native';
 import { FAB } from "react-native-elements";
-import { useWindowDimensions, StyleSheet } from "react-native";
+import { useWindowDimensions, StyleSheet, Button } from "react-native";
 import { TabView, TabBar } from "react-native-tab-view";
 import Settings from "../components/Unit/Settings";
 import Demand from "../components/Unit/Demand";
@@ -43,6 +43,11 @@ const UnitScreen = ({ navigation, route }) => {
       })
     );
   };
+
+  useEffect(() => {
+    navigation.setParams({save});
+  }, [])
+  
 
   const renderScene = ({ route }) => {
     switch (route.key) {
@@ -92,7 +97,6 @@ const UnitScreen = ({ navigation, route }) => {
   useEffect(() => {}, [actualUnit]);
 
   useEffect(() => {
-    console.log("init UnitScreen");
   }, []);
 
   const layout = useWindowDimensions();
@@ -135,15 +139,6 @@ const UnitScreen = ({ navigation, route }) => {
         lazy
       />
 
-      <FAB
-        title="Save"
-        onPress={save}
-        color={THEME.MAIN_COLOR}
-        buttonStyle={{ width: 150 }}
-        containerStyle={{ margin: 10 }}
-        icon={() => <FontAwesome name="save" color="#fff" size={24} />}
-        iconRight={true}
-      />
     </>
   );
 };

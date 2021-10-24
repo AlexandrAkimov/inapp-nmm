@@ -30,12 +30,10 @@ export const saveApp = (app) => {
     try {
 
       dispatch(setLocalLoading(true))
-      console.log(app.app);
       delete app.app.activities_count
       await save(app)
       await dispatch(loadApps())
       await dispatch(getUnits(app.app.id))
-      console.log(app);
       if (!app.app.id) {
         RootNavigation.navigate('MainApp')
       } else if (!app.adUnits.every(u => u.id)) {

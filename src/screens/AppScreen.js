@@ -4,6 +4,12 @@ import {
   Feather,
   FontAwesome,
 } from "@expo/vector-icons";
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded,
+} from 'react-native-admob'
 import React, { useEffect, useState } from "react";
 import { useWindowDimensions, StyleSheet, View } from "react-native";
 import { useTheme } from '@react-navigation/native';
@@ -65,7 +71,6 @@ const AppScreen = ({ navigation, route }) => {
     if (app.id) {
       dispatch(getUnits(app.id))
     }
-    console.log('init');
   }, []);
 
   const layout = useWindowDimensions();
@@ -118,6 +123,13 @@ const AppScreen = ({ navigation, route }) => {
       />
       {app.id ? (
         <View style={styles.actions}>
+          {/* <AdMobBanner
+            adSize="fullBanner"
+            adUnitID="https://inapp.brainlyads.com/90814396/anewmode_160x600_adhesionskin_HB"
+            testDevices={[AdMobBanner.simulatorId]}
+            onAdFailedToLoad={error => console.error(error)}
+            onAppEvent={event => console.log(event.name, event.info)}
+          /> */}
           <FAB
             title="Save"
             onPress={save}

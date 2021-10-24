@@ -18,7 +18,7 @@ export const mainConfig = [
   },
   {
     name: "Login",
-    component: () => <LoginScreen onClick={() => console.log('LOG OUT FROM DRAWER')}/>,
+    component: () => <LoginScreen />,
     options: (navigation, route) => ({
       drawerLabel: 'Log Out',
       drawerIcon: (info) => (

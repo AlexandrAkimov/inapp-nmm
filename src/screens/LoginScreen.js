@@ -24,7 +24,7 @@ const LoginScreen = ({navigation, route}) => {
     }
     dispatch({type: 'LOGIN'});
     await AsyncStorage.setItem('token', response.data.token)
-    navigation.navigate('Apps');
+    navigation.push('Apps');
   }
 
   const backPressed = () => {
